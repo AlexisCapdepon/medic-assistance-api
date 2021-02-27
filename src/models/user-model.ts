@@ -1,8 +1,6 @@
 import { Document, Model, Mongoose, Schema } from 'mongoose';
 import ServiceContainer from '../services/service-container';
 import Attributes from './model';
-
-
 /**
  * User attributes.
  */
@@ -10,6 +8,9 @@ export interface UserAttributes extends Attributes {
   email: string;
   name: string;
   password: string;
+  userCategory: string;
+  phone: string;
+  region: string;
   refreshToken?: string;
 }
 
@@ -55,6 +56,21 @@ function createUserSchema(container: ServiceContainer) {
       required: [true, 'Password is required'],
       minlength: [8, 'Password is too small'],
       select: false
+    },
+    userCategory: {
+      type: Schema.Types.String,
+      required: [true, 'Category required'],
+    },
+    phone: {
+      type: Schema.Types.String,
+      unique: true,
+      validate: {
+        validator: (phone: string) => /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/.test(phone),
+        message: 'Invalid phone'
+      }
+    },
+    region: {
+      type: Schema.Types.String,
     },
     refreshToken: {
       type: Schema.Types.String,
