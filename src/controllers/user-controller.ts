@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { stringifyNumber } from 'yaml/util';
 import ServiceContainer from '../services/service-container';
 import Controller, { Link } from './controller';
 
@@ -79,7 +80,10 @@ export default class UserController extends Controller {
       const user = await this.db.users.create({
         email: req.body.email,
         name: req.body.name,
-        password: req.body.password
+        password: req.body.password,
+        userCategory: 'stringifyNumber',
+        phone: 'string',
+        region: 'string',
       });
       return res.status(201).send({
         id: user.id,
