@@ -3,6 +3,13 @@ import { stringifyNumber } from 'yaml/util';
 import ServiceContainer from '../services/service-container';
 import Controller, { Link } from './controller';
 
+export enum UserCategory {
+  Doctor = 'doctor',
+  Veterinarian = 'veterinarian' ,
+  Nurse = 'nurse',
+  Pharmacist = 'pharmacist'
+}
+
 /**
  * Users controller class.
  * 
@@ -81,7 +88,7 @@ export default class UserController extends Controller {
         email: req.body.email,
         name: req.body.name,
         password: req.body.password,
-        userCategory: 'stringifyNumber',
+        userCategory: UserCategory.Doctor,
         phone: 'string',
         region: 'string',
       });

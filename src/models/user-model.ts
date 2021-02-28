@@ -1,6 +1,14 @@
 import { Document, Model, Mongoose, Schema } from 'mongoose';
 import ServiceContainer from '../services/service-container';
 import Attributes from './model';
+
+export enum UserCategory {
+  Doctor = 'doctor',
+  Veterinarian = 'veterinarian' ,
+  Nurse = 'nurse',
+  Pharmacist = 'pharmacist'
+}
+
 /**
  * User attributes.
  */
@@ -8,7 +16,7 @@ export interface UserAttributes extends Attributes {
   email: string;
   name: string;
   password: string;
-  userCategory: string;
+  userCategory: UserCategory;
   phone: string;
   region: string;
   refreshToken?: string;
@@ -58,7 +66,7 @@ function createUserSchema(container: ServiceContainer) {
       select: false
     },
     userCategory: {
-      type: Schema.Types.String,
+      type: Object.assign(UserCategory),
       required: [true, 'Category required'],
     },
     phone: {
