@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { stringifyNumber } from 'yaml/util';
 import ServiceContainer from '../services/service-container';
 import Controller, { Link } from './controller';
 
@@ -90,7 +89,15 @@ export default class UserController extends Controller {
         password: req.body.password,
         userCategory: UserCategory.Doctor,
         phone: 'string',
-        region: 'string',
+        department: 'string',
+        address: {
+          firstAddressField: 'string',
+          secondAddressField: 'string',
+          thirdAddressField: 'string',
+          city: 'string',
+          zipCode: 'string',
+          country: 'string',
+        }
       });
       return res.status(201).send({
         id: user.id,

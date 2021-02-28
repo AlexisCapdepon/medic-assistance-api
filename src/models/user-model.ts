@@ -9,6 +9,14 @@ export enum UserCategory {
   Pharmacist = 'pharmacist'
 }
 
+export class Address {
+  firstAddressField: string;
+  secondAddressField: string;
+  thirdAddressField: string;
+  city: string;
+  zipCode: string;
+  country: string
+}
 /**
  * User attributes.
  */
@@ -18,7 +26,8 @@ export interface UserAttributes extends Attributes {
   password: string;
   userCategory: UserCategory;
   phone: string;
-  region: string;
+  department: string;
+  address: Address;
   refreshToken?: string;
 }
 
@@ -77,8 +86,11 @@ function createUserSchema(container: ServiceContainer) {
         message: 'Invalid phone'
       }
     },
-    region: {
+    departments: {
       type: Schema.Types.String,
+    },
+    address: {
+      type: Object.assign(Address),
     },
     refreshToken: {
       type: Schema.Types.String,
