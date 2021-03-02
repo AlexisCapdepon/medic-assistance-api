@@ -2,6 +2,13 @@ import { Request, Response } from 'express';
 import ServiceContainer from '../services/service-container';
 import Controller, { Link } from './controller';
 
+export enum UserCategory {
+  Doctor = 'doctor',
+  Veterinarian = 'veterinarian' ,
+  Nurse = 'nurse',
+  Pharmacist = 'pharmacist'
+}
+
 /**
  * Users controller class.
  * 
@@ -76,11 +83,8 @@ export default class UserController extends Controller {
    */
   public async createHandler(req: Request, res: Response): Promise<Response> {
     try {
-      const user = await this.db.users.create({
-        email: req.body.email,
-        name: req.body.name.name.name,
-        password: req.body.password
-      });
+      console.log(req.body);
+      const user = await this.db.users.create(req.body);
       return res.status(201).send({
         id: user.id,
         links: [{
@@ -116,7 +120,7 @@ export default class UserController extends Controller {
         }));
       }
       user.email = req.body.email;
-      user.name = req.body.name;
+      // user.name = req.body.name;
       user.password = req.body.password;
       await user.save();
       return res.status(200).send({
@@ -157,7 +161,7 @@ export default class UserController extends Controller {
         user.email = req.body.email;
       }
       if (req.body.name != null) {
-        user.name = req.body.name;
+        // user.name = req.body.name;
       }
       if (req.body.password != null) {
         user.password = req.body.password;
