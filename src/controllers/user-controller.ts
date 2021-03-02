@@ -1,13 +1,7 @@
 import { Request, Response } from 'express';
 import ServiceContainer from '../services/service-container';
 import Controller, { Link } from './controller';
-
-export enum UserCategory {
-  Doctor = 'doctor',
-  Veterinarian = 'veterinarian' ,
-  Nurse = 'nurse',
-  Pharmacist = 'pharmacist'
-}
+import {UserCategoryList, UserCategoryDetailList} from '../models/user-model'
 
 /**
  * Users controller class.
@@ -24,6 +18,7 @@ export default class UserController extends Controller {
   public constructor(container: ServiceContainer) {
     super(container, '/users');
     this.registerEndpoint({ method: 'GET', uri: '/', handlers: this.listHandler });
+    this.registerEndpoint({ method: 'GET', uri: '/category', handlers: this.categoryHandler });
     this.registerEndpoint({ method: 'GET', uri: '/:id', handlers: this.getHandler });
     this.registerEndpoint({ method: 'POST', uri: '/', handlers: this.createHandler });
     this.registerEndpoint({ method: 'PUT', uri: '/:id', handlers: this.modifyHandler });
@@ -73,6 +68,24 @@ export default class UserController extends Controller {
   }
 
   /**
+   * Gets a specific user.
+   * 
+   * Path : `GET /users/:id`
+   * 
+   * @param req Express request
+   * @param res Express response
+   * @async
+   */
+  public async categoryHandler(req: Request, res: Response): Promise<Response> {
+    try {
+      console.log(UserCategoryList)
+      return res.status(200).send({UserCategoryList, UserCategoryDetailList});
+    } catch (err) {
+      return res.status(500).send(this.container.errors.formatServerError(err));
+    }
+  }
+
+  /**
    * Creates a new user.
    * 
    * Path : `POST /users`
@@ -83,7 +96,6 @@ export default class UserController extends Controller {
    */
   public async createHandler(req: Request, res: Response): Promise<Response> {
     try {
-      console.log(req.body);
       const user = await this.db.users.create(req.body);
       return res.status(201).send({
         id: user.id,
